@@ -104,7 +104,7 @@ a, button, input, summary { touch-action: manipulation; -webkit-tap-highlight-co
 /* 4. Aulas: lista ordenada em duas colunas, com cena real de cada aula */
 .aulas { background: var(--chao-2); padding-block: var(--secao); }
 .aulas__intro { font-size: var(--t-lead); line-height: 1.45; max-width: 32em; margin-bottom: 3.5rem; }
-.aulas__lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, auto); grid-auto-flow: column; gap: 28px clamp(32px, 5vw, 80px); }
+.aulas__lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, auto); grid-auto-flow: column; gap: 28px clamp(32px, 5vw, 80px); }
 .aulas__lista li { display: grid; grid-template-columns: clamp(88px, 9vw, 128px) 1fr; gap: 1.25rem; align-items: center; }
 .aulas__lista img { width: 100%; aspect-ratio: 1; object-fit: cover; }
 .aulas__lista h3 { font: 500 var(--t-lead)/1.2 var(--serif); margin-bottom: .3rem; }
