@@ -8,6 +8,6 @@
  *   Não preencher com link de teste em produção.
  */
 window.STY_CONFIG = {
-  CHECKOUT_URL: "",
+  CHECKOUT_URL: "https://pay.kiwify.com.br/AS0L1TQ",
   INSTAGRAM_URL: "" // opcional: perfil oficial da Simone, após confirmação
 };
