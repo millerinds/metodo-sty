@@ -1,0 +1,96 @@
+/* Método STY · página /links/
+ * Herda tokens, fontes, foco e .marca de ../styles.css (landing page). Aqui fica só o que é desta página.
+ * Escala: título (h1) · segundo nível (destaque e nome no rodapé) · título do cartão · corpo · nota. */
+.lk {
+  --lk-t2: clamp(2rem, 8.5vw, 2.375rem);
+  --lk-t3: 1.4375rem;
+  --lk-thumb: 80px;
+}
+
+/* Celular primeiro: foto até a borda, perfil, links, peças, nome no rodapé. */
+.lk-foto { overflow: hidden; background: var(--chao-2); }
+.lk-foto img { width: 100%; height: min(40svh, 100vw); object-fit: cover; object-position: 50% 24%; }
+
+.lk-conteudo {
+  width: 100%; max-width: 560px; margin-inline: auto;
+  padding: 24px max(var(--margem), env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(var(--margem), env(safe-area-inset-left));
+}
+
+.lk-perfil .marca { display: inline-block; margin-bottom: .75rem; }
+.lk h1 { font-size: clamp(3.25rem, 15vw, 4.75rem); line-height: .95; margin-bottom: .875rem; }
+.lk-bio { font-size: 1.25rem; line-height: 1.45; max-width: 26em; margin: 0; }
+
+/* Links: cada cartão é uma área de toque inteira; separação por tom, sem linhas nem sombras. */
+.lk-nav { margin-top: 1.75rem; }
+.lk-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.lk-link {
+  display: grid; grid-template-columns: var(--lk-thumb) 1fr auto; align-items: center; gap: 1rem;
+  min-height: calc(var(--lk-thumb) + 20px); padding: 10px 1.25rem 10px 10px;
+  background: var(--chao-2); color: var(--tinta); text-decoration: none;
+  transition: background-color .2s var(--ease), transform .2s var(--ease);
+}
+.lk-link--sem-img { grid-template-columns: 1fr auto; min-height: 76px; padding: 1rem 1.25rem; }
+.lk-link:hover { background: #dcdbd4; }
+.lk-link:active { transform: scale(.985); }
+.lk-link__img { width: var(--lk-thumb); height: var(--lk-thumb); object-fit: cover; background: var(--chao); }
+.lk-link__txt { min-width: 0; overflow-wrap: anywhere; }
+.lk-link__titulo { display: block; font: 500 var(--lk-t3)/1.15 var(--serif); letter-spacing: -.01em; text-wrap: balance; }
+.lk-link__desc { display: block; margin-top: .25rem; font-size: 1rem; line-height: 1.4; }
+.lk-link__seta { color: var(--ouro); font-size: 1.25rem; line-height: 1; transition: transform .2s var(--ease); }
+.lk-link:hover .lk-link__seta { transform: translateX(4px); }
+
+/* Destaque: o curso principal ganha o campo de cor da inscrição e a foto larga, de borda a borda. */
+.lk-item--destaque .lk-link {
+  grid-template-columns: 1fr auto; gap: 0; padding: 0;
+  background: var(--campo); color: var(--campo-tx);
+}
+.lk-item--destaque .lk-link:hover { background: #2e2a18; }
+.lk-item--destaque .lk-link__img { grid-column: 1 / -1; width: 100%; height: auto; aspect-ratio: 2 / 1; object-position: 50% 58%; background: var(--campo); }
+.lk-item--destaque .lk-link__txt { padding: 1.125rem 1rem 1.25rem 1.25rem; }
+.lk-item--destaque .lk-link__seta { padding-right: 1.25rem; color: #c9b46a; }
+.lk-item--destaque .lk-link--sem-img { padding: 1.25rem; }
+.lk-item--destaque .lk-link--sem-img .lk-link__txt, .lk-item--destaque .lk-link--sem-img .lk-link__seta { padding: 0; }
+.lk-item--destaque .lk-link__titulo { font-size: var(--lk-t2); line-height: 1.05; }
+.lk-item--destaque .lk-link__desc { color: rgba(240, 240, 236, .86); font-size: var(--t-corpo); }
+.lk-item--destaque .lk-link:focus-visible { outline-color: var(--campo); }
+
+.lk-aviso { margin: 0; padding: 1rem 1.25rem; background: var(--chao-2); }
+
+/* Peças: a prova do método, as mesmas fotos da galeria da landing page. */
+.lk-pecas { margin-top: 3rem; }
+.lk-pecas__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.lk-pecas__grid img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; background: var(--chao-2); }
+.lk-pecas figcaption { margin-top: .75rem; font-size: var(--t-nota); color: var(--tinta-2); }
+
+.lk-rodape { margin-top: 3rem; font-size: var(--t-nota); color: var(--tinta-2); }
+.lk-rodape p { margin: 0 0 .35rem; }
+.lk-rodape .lk-rodape__nome { font: 500 var(--lk-t2)/.95 var(--serif); letter-spacing: -.02em; color: var(--ouro); margin-bottom: .75rem; }
+
+.lk-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Entrada em CSS puro (estado inicial só durante o atraso): nada fica oculto se o script falhar. */
+@keyframes lk-sobe { from { opacity: 0; transform: translateY(20px); } }
+@keyframes lk-foto { from { transform: scale(1.06); } }
+.lk-foto img { animation: lk-foto 1.8s var(--ease) backwards; }
+.lk-perfil > *, .lk-item, .lk-aviso, .lk-pecas, .lk-rodape { animation: lk-sobe .7s var(--ease) backwards; animation-delay: var(--d, 0ms); }
+.lk-perfil > :nth-child(2) { --d: 70ms; }
+.lk-perfil > :nth-child(3) { --d: 140ms; }
+.lk-pecas { --d: 490ms; }
+.lk-rodape { --d: 560ms; }
+@media (prefers-reduced-motion: reduce) {
+  .lk-foto img, .lk-perfil > *, .lk-item, .lk-aviso, .lk-pecas, .lk-rodape { animation: none; }
+  .lk-link, .lk-link__seta { transition: none; }
+  .lk-link:active, .lk-link:hover .lk-link__seta { transform: none; }
+}
+
+/* Telas largas: mesma composição do topo da landing page, texto à esquerda e foto até a borda direita. */
+@media (min-width: 820px) {
+  .lk { --lk-thumb: 88px; }
+  .lk-pagina { display: grid; grid-template-columns: 1fr 1fr; min-height: 100svh; }
+  .lk-foto { order: 2; position: sticky; top: 0; align-self: start; height: 100svh; }
+  .lk-foto img { height: 100%; object-position: 50% 30%; }
+  .lk-conteudo { align-self: center; max-width: 680px; padding: 72px clamp(32px, 5vw, 72px); }
+  .lk h1 { font-size: clamp(3.5rem, 6.4vw, 6rem); margin-bottom: 1.25rem; }
+  .lk-nav { margin-top: 2.5rem; }
+  .lk-item--destaque .lk-link__img { aspect-ratio: 16 / 9; }
+}
