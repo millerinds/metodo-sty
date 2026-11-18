@@ -1,8 +1,9 @@
 /*
  * Método STY · página /links/
- * Lê links.json (mesma pasta) e monta os botões. Para editar os links, altere só o links.json.
+ * Lê links.json (mesma pasta) e monta os cartões. Para editar os links, altere só o links.json.
  * Segurança: aceita apenas https:, mailto: e tel:; conteúdo inserido como texto (sem innerHTML);
  * links externos abrem em nova aba com rel="noopener noreferrer".
+ * Cache: o JSON é sempre conferido com o servidor (cache: "no-cache"), para uma edição valer na hora.
  */
 (function () {
   "use strict";
@@ -15,20 +16,46 @@
   var DOMINIOS_DO_SITE = ["metodosty.com", "www.metodosty.com", location.hostname];
   var SVG = "http://www.w3.org/2000/svg";
 
-  // Ícones em traço (24×24). Campo "icone" do links.json: sty, whatsapp, instagram, email, link.
+  // Ícone do destino no lugar da seta (campo "icone" do links.json). Sem ícone: seta.
   var ICONES = {
-    sty: ["M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0", "M3.6 9h16.8", "M3.6 15h16.8", "M11.5 3a17 17 0 0 0 0 18", "M12.5 3a17 17 0 0 1 0 18"],
     whatsapp: ["M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9", "M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1"],
     instagram: ["M4 8a4 4 0 0 1 4 -4h8a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4z", "M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0", "M16.5 7.5v.01"],
-    email: ["M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z", "M3 7l9 6l9 -6"],
-    link: ["M9 15l6 -6", "M11 6l.46 -.54a5 5 0 0 1 7.07 7.07l-.53 .47", "M13 18l-.4 .53a5.07 5.07 0 0 1 -7.12 0a4.97 4.97 0 0 1 0 -7.07l.52 -.46"]
+    email: ["M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z", "M3 7l9 6l9 -6"]
   };
+
+  function seta(nome) {
+    var caminhos = ICONES[nome];
+    if (!caminhos) {
+      var s = el("span", "lk-link__seta", "\u2192");
+      s.setAttribute("aria-hidden", "true");
+      return s;
+    }
+    var svg = document.createElementNS(SVG, "svg");
+    svg.setAttribute("class", "lk-link__seta lk-link__icone");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("focusable", "false");
+    caminhos.forEach(function (d) {
+      var p = document.createElementNS(SVG, "path");
+      p.setAttribute("d", d);
+      svg.appendChild(p);
+    });
+    return svg;
+  }
 
   function urlSegura(valor) {
     if (typeof valor !== "string" || !valor.trim()) return null;
     try {
       var u = new URL(valor.trim(), location.href);
       return /^(https:|mailto:|tel:)$/.test(u.protocol) ? u : null;
+    } catch (e) { return null; }
+  }
+
+  function imagemSegura(valor) {
+    if (typeof valor !== "string" || !valor.trim()) return null;
+    try {
+      var u = new URL(valor.trim(), location.href);
+      return /^https?:$/.test(u.protocol) ? u.href : null;
     } catch (e) { return null; }
   }
 
@@ -39,26 +66,13 @@
     return n;
   }
 
-  function icone(nome) {
-    var svg = document.createElementNS(SVG, "svg");
-    svg.setAttribute("class", "lk-btn__icone");
-    svg.setAttribute("viewBox", "0 0 24 24");
-    svg.setAttribute("aria-hidden", "true");
-    svg.setAttribute("focusable", "false");
-    (ICONES[nome] || ICONES.link).forEach(function (d) {
-      var p = document.createElementNS(SVG, "path");
-      p.setAttribute("d", d);
-      svg.appendChild(p);
-    });
-    return svg;
-  }
-
-  function botao(item, i) {
+  function cartao(item, i) {
     var url = urlSegura(item.url);
-    var li = el("li");
+    var img = imagemSegura(item.imagem);
+    var li = el("li", "lk-item" + (item.destaque ? " lk-item--destaque" : ""));
     li.style.setProperty("--d", 210 + Math.min(i, 8) * 70 + "ms");
 
-    var a = el("a", "btn lk-btn");
+    var a = el("a", "lk-link" + (img ? "" : " lk-link--sem-img"));
     a.href = url.href;
     var externo = url.protocol === "https:" && DOMINIOS_DO_SITE.indexOf(url.hostname) === -1;
     if (externo) {
@@ -66,13 +80,24 @@
       a.rel = "noopener noreferrer";
     }
 
-    a.appendChild(icone(typeof item.icone === "string" ? item.icone.trim() : ""));
-    var txt = el("span", "lk-btn__txt", item.titulo.trim());
+    if (img) {
+      var im = el("img", "lk-link__img");
+      im.src = img;
+      im.alt = "";
+      im.decoding = "async";
+      if (item.destaque) { im.width = 640; im.height = 400; } else { im.width = 320; im.height = 320; im.loading = "lazy"; }
+      a.appendChild(im);
+    }
+
+    var txt = el("span", "lk-link__txt");
+    txt.appendChild(el("span", "lk-link__titulo", item.titulo.trim()));
     if (typeof item.descricao === "string" && item.descricao.trim()) {
-      txt.appendChild(el("span", "lk-btn__desc", item.descricao.trim()));
+      txt.appendChild(el("span", "lk-link__desc", item.descricao.trim()));
     }
     if (externo) txt.appendChild(el("span", "lk-sr", " (abre em nova aba)"));
     a.appendChild(txt);
+
+    a.appendChild(seta(typeof item.icone === "string" ? item.icone.trim() : ""));
 
     li.appendChild(a);
     return li;
@@ -85,7 +110,7 @@
     if (aviso) aviso.hidden = false;
   }
 
-  fetch("links.json", { credentials: "same-origin" })
+  fetch("links.json", { credentials: "same-origin", cache: "no-cache" })
     .then(function (r) {
       if (!r.ok) throw new Error("links.json respondeu " + r.status);
       return r.json();
@@ -109,7 +134,7 @@
 
       if (!validos.length) return falhou("nenhum link ativo em links.json");
       var frag = document.createDocumentFragment();
-      validos.forEach(function (x, i) { frag.appendChild(botao(x.item, i)); });
+      validos.forEach(function (x, i) { frag.appendChild(cartao(x.item, i)); });
       lista.appendChild(frag);
       lista.removeAttribute("aria-busy");
     })

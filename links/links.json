@@ -2,27 +2,30 @@
   "links": [
     {
       "titulo": "Conheça o Método STY",
-      "descricao": "",
+      "descricao": "Papel machê do papel à peça pronta: 8 videoaulas, PDF completo e certificado.",
       "url": "https://metodosty.com/",
-      "icone": "sty",
       "ordem": 1,
-      "ativo": true
+      "ativo": true,
+      "destaque": true,
+      "imagem": "../assets/img/foto-4167-640.jpg"
     },
     {
-      "titulo": "Fale comigo no WhatsApp",
-      "descricao": "",
+      "titulo": "Fale com a Simone",
+      "descricao": "Tire suas dúvidas sobre o curso pelo WhatsApp.",
       "url": "https://wa.me/554999873362?text=Ol%C3%A1%2C%20Simone%21%20Fiquei%20interessado%20no%20M%C3%A9todo%20STY%20e%20gostaria%20de%20saber%20mais%20informa%C3%A7%C3%B5es.",
-      "icone": "whatsapp",
       "ordem": 2,
-      "ativo": true
+      "ativo": true,
+      "icone": "whatsapp",
+      "imagem": "img/simone-perfil.jpg"
     },
     {
-      "titulo": "Meu Instagram",
-      "descricao": "",
+      "titulo": "Instagram",
+      "descricao": "@streysimone · peças, bastidores e novidades.",
       "url": "https://www.instagram.com/streysimone/",
-      "icone": "instagram",
       "ordem": 3,
-      "ativo": true
+      "ativo": true,
+      "icone": "instagram",
+      "imagem": "img/instagram.jpg"
     },
     {
       "titulo": "Liquidificador Artesanal Gigante",
@@ -30,7 +33,7 @@
       "url": "https://pay.kiwify.com.br/iT71N1r",
       "ordem": 4,
       "ativo": false,
-      "icone": "link"
+      "imagem": "img/liquidificador.jpg"
     },
     {
       "titulo": "Cortador Artesanal de EPS",
@@ -38,15 +41,14 @@
       "url": "https://pay.kiwify.com.br/asJfn8F",
       "ordem": 5,
       "ativo": false,
-      "icone": "link"
+      "imagem": "img/cortador.jpg"
     },
     {
       "titulo": "Área do aluno",
       "descricao": "Já comprou? Acesse suas aulas na Kiwify.",
       "url": "",
       "ordem": 6,
-      "ativo": false,
-      "icone": "link"
+      "ativo": false
     }
   ]
 }
