@@ -68,7 +68,7 @@ a, button, input, summary { touch-action: manipulation; -webkit-tap-highlight-co
 
 /* Topo: barra simples */
 .topo { position: sticky; top: 0; z-index: 20; background: var(--chao); }
-.topo__in { display: flex; align-items: center; gap: 2rem; height: var(--topo-h); }
+.topo__in { display: flex; align-items: center; justify-content: flex-end; gap: 2rem; height: var(--topo-h); }
 .marca { font: italic 500 2.125rem/1 var(--serif); color: var(--ouro); text-decoration: none; margin-right: auto; transition: opacity .2s; }
 .marca:hover { opacity: .75; }
 .menu { display: flex; gap: 1.75rem; }
