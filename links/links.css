@@ -85,6 +85,11 @@
   .lk-link:active, .lk-link:hover .lk-link__seta, .lk-link:hover .lk-link__icone { transform: none; }
 }
 
+/* Celular: sem o logo "Sty" acima do nome (igual ao topo da landing page). */
+@media (max-width: 819.98px) {
+  .lk-perfil .marca { display: none; }
+}
+
 /* Telas largas: mesma composição do topo da landing page, texto à esquerda e foto até a borda direita. */
 @media (min-width: 820px) {
   .lk { --lk-thumb: 88px; }
