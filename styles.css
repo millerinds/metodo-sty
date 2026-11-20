@@ -68,7 +68,7 @@ a, button, input, summary { touch-action: manipulation; -webkit-tap-highlight-co
 
 /* Topo: barra simples */
 .topo { position: sticky; top: 0; z-index: 20; background: var(--chao); }
-.topo__in { display: flex; align-items: center; justify-content: flex-end; gap: 2rem; height: var(--topo-h); }
+.topo__in { display: flex; align-items: center; gap: 2rem; height: var(--topo-h); }
 .marca { font: italic 500 2.125rem/1 var(--serif); color: var(--ouro); text-decoration: none; margin-right: auto; transition: opacity .2s; }
 .marca:hover { opacity: .75; }
 .menu { display: flex; gap: 1.75rem; }
@@ -177,6 +177,8 @@ details p { margin: .75rem 0 0; max-width: 36em; }
   .aulas__lista { grid-template-columns: 1fr; grid-template-rows: none; grid-auto-flow: row; }
 }
 @media (max-width: 820px) {
+  .marca { display: none; }
+  .topo__in { justify-content: flex-end; }
   .hero, .sobre { grid-template-columns: 1fr; min-height: 0; }
   .hero__foto { order: -1; }
   .hero__foto img { aspect-ratio: 4/5; max-height: 72svh; }
